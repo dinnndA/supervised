@@ -43,4 +43,4 @@ for col in X.columns:
 # Prediksi
 if st.button("Prediksi"):
     label, class_index = predict_fruit(input_features)
-    st.success(f"Model memprediksi jenis buah: {label} (Kelas: {class_index})")
+    st.success(f"Model memprediksi jenis buah: {label} (Cluster: {class_index})")
