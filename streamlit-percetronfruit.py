@@ -8,23 +8,24 @@ model_file = 'perceptronfruit.pkl'
 with open(model_file, 'rb') as f:
     model = pickle.load(f)
 
-# Load scaler (jika diperlukan)
-scaler_file = 'scaler_perceptron.pkl'  # Scaler harus disimpan saat training
+# Load scaler
+scaler_file = 'scaler_perceptron.pkl'
 with open(scaler_file, 'rb') as f:
     scaler = pickle.load(f)
+
+# Load dataset
+file_path = 'fruit.xlsx'
+df = pd.read_excel(file_path)
+X = df[['diameter', 'weight', 'red', 'green', 'blue']]  # Fitur
+y = df['name']  # Label target
+unique_labels = y.unique()  # List unik label
 
 # Fungsi untuk prediksi
 def predict_fruit(features):
     features_scaled = scaler.transform([features])
-    prediction = model.predict(features_scaled)
-    return prediction[0]
-
-# Load dataset dan scaler
-file_path = 'fruit.xlsx'
-df = pd.read_excel(file_path)
-X = df[['diameter', 'weight', 'red', 'green', 'blue']]  # Fitur
-scaler = StandardScaler()
-scaler.fit(X)
+    prediction_index = model.predict(features_scaled)[0]  # Prediksi indeks
+    prediction_label = unique_labels[prediction_index]  # Mapping ke label
+    return prediction_label, prediction_index
 
 # Konfigurasi Streamlit
 st.title("Aplikasi Prediksi Buah")
@@ -38,5 +39,5 @@ for col in X.columns:
 
 # Prediksi
 if st.button("Prediksi"):
-    result = predict_fruit(input_features)
-    st.success(f"Model memprediksi jenis buah: {result}")
+    label, class_index = predict_fruit(input_features)
+    st.success(f"Model memprediksi jenis buah: {label} (Kelas: {class_index})")
