@@ -20,7 +20,7 @@ X = df[['diameter', 'weight', 'red', 'green', 'blue']]  # Fitur
 y = df['name']  # Label target
 
 # Mapping label ke kelas secara manual (untuk membalik logika)
-label_to_class = {'grape': 0, 'orange': 1}  # Pastikan sesuai
+label_to_class = {'grapefruit': 0, 'orange': 1}  # Pastikan sesuai
 class_to_label = {v: k for k, v in label_to_class.items()}  # Membalik mapping
 
 # Fungsi untuk prediksi
