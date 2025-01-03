@@ -18,14 +18,17 @@ file_path = 'fruit.xlsx'
 df = pd.read_excel(file_path)
 X = df[['diameter', 'weight', 'red', 'green', 'blue']]  # Fitur
 y = df['name']  # Label target
-unique_labels = y.unique()  # List unik label
+
+# Mapping label ke kelas secara manual (untuk membalik logika)
+label_to_class = {'grape': 0, 'orange': 1}  # Pastikan sesuai
+class_to_label = {v: k for k, v in label_to_class.items()}  # Membalik mapping
 
 # Fungsi untuk prediksi
 def predict_fruit(features):
     features_scaled = scaler.transform([features])
-    prediction_index = model.predict(features_scaled)[0]  # Prediksi indeks
-    prediction_label = unique_labels[prediction_index]  # Mapping ke label
-    return prediction_label, prediction_index
+    prediction_class = model.predict(features_scaled)[0]  # Prediksi kelas
+    prediction_label = class_to_label[prediction_class]  # Mapping ke label
+    return prediction_label, prediction_class
 
 # Konfigurasi Streamlit
 st.title("Aplikasi Prediksi Buah")
