@@ -19,14 +19,20 @@ def predict_fruit(features):
     prediction = model.predict(features_scaled)
     return prediction[0]
 
+# Load dataset dan scaler
+file_path = 'fruit.xlsx'
+df = pd.read_excel(file_path)
+X = df[['diameter', 'weight', 'red', 'green', 'blue']]  # Fitur
+scaler = StandardScaler()
+scaler.fit(X)
+
 # Konfigurasi Streamlit
 st.title("Aplikasi Prediksi Buah")
 st.write("Masukkan fitur buah untuk memprediksi jenis buah.")
 
 # Input pengguna
 input_features = []
-columns = ['Fitur1', 'Fitur2', 'Fitur3', 'Fitur4']  # Sesuaikan dengan kolom fitur
-for col in columns:
+for col in X.columns:
     value = st.number_input(f"Masukkan nilai untuk {col}:", value=0.0)
     input_features.append(value)
 
